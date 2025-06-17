@@ -2,7 +2,10 @@ module github.com/gbswhs/gbsw-gitrank
 
 go 1.24.3
 
-require github.com/gofiber/fiber/v2 v2.52.8
+require (
+	github.com/gofiber/fiber/v2 v2.52.8
+	golang.org/x/oauth2 v0.30.0
+)
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
@@ -12,6 +15,8 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7 // indirect
+	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect

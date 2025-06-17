@@ -56,7 +56,7 @@ func main() {
 	log.Fatal(app.Listen("localhost:3000"))
 
 	// for _, e := range users {
-	// 	events, err := client.CountEvents(e.Login, 100, 1)
+	// 	events, err := ghclient.CountEvents(e.Login, 100, 1)
 	// 	if err != nil {
 
 	// 	}
