@@ -1,6 +1,6 @@
 package model
 
-type MembersWithRole struct {
-	Nodes    []MemberNode
-	PageInfo PageInfo
+type membersWithRole struct {
+	Nodes    []memberNode
+	PageInfo pageInfo
 }

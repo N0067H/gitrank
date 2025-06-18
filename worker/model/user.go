@@ -1,5 +1,5 @@
 package model
 
-type User struct {
-	ContributionsCollection ContributionCollection
+type user struct {
+	ContributionsCollection contributionCollection
 }

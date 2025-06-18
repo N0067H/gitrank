@@ -1,5 +1,5 @@
 package model
 
 type OrganizationQuery struct {
-	Organization Organization `graphql:"organization(login: $login)"`
+	Organization organization `graphql:"organization(login: $login)"`
 }

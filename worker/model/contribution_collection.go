@@ -1,5 +1,5 @@
 package model
 
-type ContributionCollection struct {
-	ContributionCalendar ContributionCalendar
+type contributionCollection struct {
+	ContributionCalendar contributionCalendar
 }
