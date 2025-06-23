@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "./proto;rank";
+
+message RankRequest {
+  string organization = 1;
+}
+
+message RankReply {
+  repeated User users = 1;
+}
+
+message User {
+  string login = 1;
+  uint32 totalContributions = 3;
+}
+
+service Rank {
+  rpc GetRankings(RankRequest) returns (RankReply);
+}

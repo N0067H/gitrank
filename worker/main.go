@@ -1,46 +1,34 @@
 package main
 
 import (
-	"fmt"
+	rank "github.com/gbswhs/gbsw-gitrank/proto"
+	"github.com/gbswhs/gbsw-gitrank/worker/config"
 	"github.com/gbswhs/gbsw-gitrank/worker/ghclient"
-	"github.com/gbswhs/gbsw-gitrank/worker/model"
-	"github.com/shurcooL/githubv4"
+	"github.com/gbswhs/gbsw-gitrank/worker/rpc"
+	"google.golang.org/grpc"
+	"log"
+	"net"
 )
 
 func main() {
-	cursor := (*githubv4.String)(nil)
-	client := ghclient.GetClient()
-
-	orgQuery := new(model.OrganizationQuery)
-	err := ghclient.QueryOrganization(client, orgQuery, cursor)
+	err := config.Init()
 	if err != nil {
-		panic(err)
+		log.Fatal("failed to load .env file")
 	}
 
-	org := orgQuery.Organization
-	nodes := org.MembersWithRole.Nodes
-	
-	for org.MembersWithRole.PageInfo.HasNextPage {
-		err := ghclient.QueryOrganization(client, orgQuery, cursor)
-		if err != nil {
-			panic(err)
-		}
+	ghclient.GetRanks()
 
-		newOrg := orgQuery.Organization
-		newNodes := newOrg.MembersWithRole.Nodes
-		nodes = append(nodes, newNodes...)
+	lis, err := net.Listen("tcp", ":"+config.GetConfig().WorkerPort)
+	if err != nil {
+		log.Fatalf("failed to listen: %s", err)
 	}
 
-	for _, node := range nodes {
-		contribQuery := new(model.ContributionQuery)
-		err := ghclient.QueryContributions(client, contribQuery, node.Login)
-		if err != nil {
-			panic(err)
-		}
+	s := grpc.NewServer()
+	rank.RegisterRankServer(s, &rpc.Server{})
 
-		contributionCollection := contribQuery.User.ContributionsCollection
-		contributionCalendar := contributionCollection.ContributionCalendar
-		totalContributions := contributionCalendar.TotalContributions
-		fmt.Printf("Name: %s / Total: %d\n", node.Login, totalContributions)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %s", err)
 	}
+
+	log.Println("Server is running on port " + config.GetConfig().WorkerPort)
 }
