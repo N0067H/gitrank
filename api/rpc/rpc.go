@@ -11,6 +11,11 @@ import (
 	"time"
 )
 
+type ResponseUser struct {
+	Login              string `json:"login"`
+	TotalContributions uint32 `json:"totalContributions"`
+}
+
 func ConnectToWorker() *grpc.ClientConn {
 	conn, err := grpc.NewClient("localhost:"+config.GetConfig().WorkerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
