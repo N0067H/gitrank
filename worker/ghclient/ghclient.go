@@ -2,6 +2,7 @@ package ghclient
 
 import (
 	"context"
+	rank "github.com/gbswhs/gbsw-gitrank/proto"
 	"github.com/gbswhs/gbsw-gitrank/worker/model"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
@@ -35,4 +36,17 @@ func QueryContributions(client *githubv4.Client, query *model.ContributionQuery,
 		map[string]interface{}{
 			"login": githubv4.String(login),
 		})
+}
+
+func ToProtoUsers(users []User) []*rank.User {
+	var protoUsers []*rank.User
+
+	for _, user := range users {
+		protoUsers = append(protoUsers, &rank.User{
+			Login:              string(user.Login),
+			TotalContributions: uint32(user.TotalContributions),
+		})
+	}
+
+	return protoUsers
 }
