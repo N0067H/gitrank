@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-// An slice instead of a database
+// Temporary cache store
 var Users []User
 
 type User struct {
@@ -14,6 +14,11 @@ type User struct {
 }
 
 func GetRanks() {
+	// Cache check
+	if len(Users) > 0 {
+		return
+	}
+
 	client := GetClient()
 	cursor := (*githubv4.String)(nil)
 
