@@ -3,7 +3,6 @@ package ghclient
 import (
 	"context"
 	rank "github.com/gbswhs/gbsw-gitrank/proto"
-	"github.com/gbswhs/gbsw-gitrank/worker/model"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 	"os"
@@ -20,7 +19,7 @@ func GetClient() *githubv4.Client {
 	return client
 }
 
-func QueryOrganization(client *githubv4.Client, query *model.OrganizationQuery, cursor *githubv4.String) error {
+func QueryOrganization(client *githubv4.Client, query *OrganizationQuery, cursor *githubv4.String) error {
 	return client.Query(context.Background(),
 		&query,
 		map[string]interface{}{
@@ -29,7 +28,7 @@ func QueryOrganization(client *githubv4.Client, query *model.OrganizationQuery, 
 		})
 }
 
-func QueryContributions(client *githubv4.Client, query *model.ContributionQuery, login githubv4.String) error {
+func QueryContributions(client *githubv4.Client, query *ContributionQuery, login githubv4.String) error {
 	return client.Query(
 		context.Background(),
 		&query,
