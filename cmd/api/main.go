@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/gbswhs/gbsw-gitrank/api/config"
-	"github.com/gbswhs/gbsw-gitrank/api/route"
-	"github.com/gbswhs/gbsw-gitrank/api/rpc"
+	"github.com/gbswhs/gbsw-gitrank/internal/api/config"
+	"github.com/gbswhs/gbsw-gitrank/internal/api/route"
+	"github.com/gbswhs/gbsw-gitrank/internal/api/transport"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -14,9 +14,9 @@ func main() {
 		log.Fatal("failed to load .env file")
 	}
 
-	conn := rpc.ConnectToWorker()
+	conn := transport.Connect()
 	defer conn.Close()
-	c := rpc.GetRankClient(conn)
+	c := transport.GetRankClient(conn)
 
 	app := fiber.New()
 	route.SetupRoute(app, c)

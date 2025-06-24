@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.1
-// source: proto/rank.proto
+// source: protobuf/rank.protobuf
 
 package rank
 
@@ -165,7 +165,7 @@ var File_proto_rank_proto protoreflect.FileDescriptor
 
 const file_proto_rank_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/rank.proto\"1\n" +
+	"\x10proto/rank.protobuf\"1\n" +
 	"\vRankRequest\x12\"\n" +
 	"\forganization\x18\x01 \x01(\tR\forganization\"(\n" +
 	"\tRankReply\x12\x1b\n" +
@@ -175,7 +175,7 @@ const file_proto_rank_proto_rawDesc = "" +
 	"\x12totalContributions\x18\x03 \x01(\rR\x12totalContributions2/\n" +
 	"\x04Rank\x12'\n" +
 	"\vGetRankings\x12\f.RankRequest\x1a\n" +
-	".RankReplyB\x0eZ\f./proto;rankb\x06proto3"
+	".RankReplyB\x0eZ\f./protobuf;rankb\x06proto3"
 
 var (
 	file_proto_rank_proto_rawDescOnce sync.Once

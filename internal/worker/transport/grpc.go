@@ -1,9 +1,9 @@
-package rpc
+package transport
 
 import (
 	"context"
-	rank "github.com/gbswhs/gbsw-gitrank/proto"
-	"github.com/gbswhs/gbsw-gitrank/worker/ghclient"
+	"github.com/gbswhs/gbsw-gitrank/internal/protobuf/rank"
+	"github.com/gbswhs/gbsw-gitrank/internal/worker/ghclient"
 	"log"
 )
 
@@ -15,7 +15,7 @@ func (s *Server) GetRankings(ctx context.Context, req *rank.RankRequest) (*rank.
 	log.Printf("GetRanks called with %v", req)
 
 	ghclient.GetRanks()
-	
+
 	return &rank.RankReply{
 		Users: ghclient.ToProtoUsers(ghclient.Users),
 	}, nil

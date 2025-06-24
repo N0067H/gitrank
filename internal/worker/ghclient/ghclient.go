@@ -2,7 +2,7 @@ package ghclient
 
 import (
 	"context"
-	rank "github.com/gbswhs/gbsw-gitrank/proto"
+	"github.com/gbswhs/gbsw-gitrank/internal/protobuf/rank"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 	"os"

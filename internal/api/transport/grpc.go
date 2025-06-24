@@ -1,9 +1,9 @@
-package rpc
+package transport
 
 import (
 	"context"
-	"github.com/gbswhs/gbsw-gitrank/api/config"
-	rank "github.com/gbswhs/gbsw-gitrank/proto"
+	"github.com/gbswhs/gbsw-gitrank/internal/api/config"
+	"github.com/gbswhs/gbsw-gitrank/internal/protobuf/rank"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"google.golang.org/grpc"
@@ -16,7 +16,7 @@ type ResponseUser struct {
 	TotalContributions uint32 `json:"totalContributions"`
 }
 
-func ConnectToWorker() *grpc.ClientConn {
+func Connect() *grpc.ClientConn {
 	conn, err := grpc.NewClient("localhost:"+config.GetConfig().WorkerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("failed to connect: %v", err)
@@ -42,7 +42,7 @@ func ToResponseUsers(users []*rank.User) []*ResponseUser {
 
 func GetRank(c rank.RankClient) fiber.Handler {
 	return func(cc *fiber.Ctx) error {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 		defer cancel()
 
 		r, err := c.GetRankings(ctx, &rank.RankRequest{
@@ -50,7 +50,7 @@ func GetRank(c rank.RankClient) fiber.Handler {
 		})
 
 		if err != nil {
-			log.Fatalf("failed to get ranks: %v", err)
+			log.Errorf("failed to get ranks: %v", err)
 		}
 
 		responseUsers := ToResponseUsers(r.Users)
