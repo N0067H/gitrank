@@ -13,6 +13,9 @@ type Server struct {
 
 func (s *Server) GetRankings(ctx context.Context, req *rank.RankRequest) (*rank.RankReply, error) {
 	log.Printf("GetRanks called with %v", req)
+
+	ghclient.GetRanks()
+	
 	return &rank.RankReply{
 		Users: ghclient.ToProtoUsers(ghclient.Users),
 	}, nil

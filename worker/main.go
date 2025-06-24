@@ -3,7 +3,6 @@ package main
 import (
 	rank "github.com/gbswhs/gbsw-gitrank/proto"
 	"github.com/gbswhs/gbsw-gitrank/worker/config"
-	"github.com/gbswhs/gbsw-gitrank/worker/ghclient"
 	"github.com/gbswhs/gbsw-gitrank/worker/rpc"
 	"google.golang.org/grpc"
 	"log"
@@ -15,8 +14,6 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to load .env file")
 	}
-
-	ghclient.GetRanks()
 
 	lis, err := net.Listen("tcp", ":"+config.GetConfig().WorkerPort)
 	if err != nil {
