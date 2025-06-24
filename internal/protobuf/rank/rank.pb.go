@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.1
-// source: protobuf/rank.protobuf
+// source: internal/protobuf/rank/rank.proto
 
 package rank
 
@@ -30,7 +30,7 @@ type RankRequest struct {
 
 func (x *RankRequest) Reset() {
 	*x = RankRequest{}
-	mi := &file_proto_rank_proto_msgTypes[0]
+	mi := &file_internal_protobuf_rank_rank_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *RankRequest) String() string {
 func (*RankRequest) ProtoMessage() {}
 
 func (x *RankRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_rank_proto_msgTypes[0]
+	mi := &file_internal_protobuf_rank_rank_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *RankRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RankRequest.ProtoReflect.Descriptor instead.
 func (*RankRequest) Descriptor() ([]byte, []int) {
-	return file_proto_rank_proto_rawDescGZIP(), []int{0}
+	return file_internal_protobuf_rank_rank_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *RankRequest) GetOrganization() string {
@@ -74,7 +74,7 @@ type RankReply struct {
 
 func (x *RankReply) Reset() {
 	*x = RankReply{}
-	mi := &file_proto_rank_proto_msgTypes[1]
+	mi := &file_internal_protobuf_rank_rank_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +86,7 @@ func (x *RankReply) String() string {
 func (*RankReply) ProtoMessage() {}
 
 func (x *RankReply) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_rank_proto_msgTypes[1]
+	mi := &file_internal_protobuf_rank_rank_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +99,7 @@ func (x *RankReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RankReply.ProtoReflect.Descriptor instead.
 func (*RankReply) Descriptor() ([]byte, []int) {
-	return file_proto_rank_proto_rawDescGZIP(), []int{1}
+	return file_internal_protobuf_rank_rank_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *RankReply) GetUsers() []*User {
@@ -112,14 +112,14 @@ func (x *RankReply) GetUsers() []*User {
 type User struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Login              string                 `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"`
-	TotalContributions uint32                 `protobuf:"varint,3,opt,name=totalContributions,proto3" json:"totalContributions,omitempty"`
+	TotalContributions uint32                 `protobuf:"varint,2,opt,name=totalContributions,proto3" json:"totalContributions,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_proto_rank_proto_msgTypes[2]
+	mi := &file_internal_protobuf_rank_rank_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -131,7 +131,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_rank_proto_msgTypes[2]
+	mi := &file_internal_protobuf_rank_rank_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -144,7 +144,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_proto_rank_proto_rawDescGZIP(), []int{2}
+	return file_internal_protobuf_rank_rank_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *User) GetLogin() string {
@@ -161,41 +161,41 @@ func (x *User) GetTotalContributions() uint32 {
 	return 0
 }
 
-var File_proto_rank_proto protoreflect.FileDescriptor
+var File_internal_protobuf_rank_rank_proto protoreflect.FileDescriptor
 
-const file_proto_rank_proto_rawDesc = "" +
+const file_internal_protobuf_rank_rank_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/rank.protobuf\"1\n" +
+	"!internal/protobuf/rank/rank.proto\"1\n" +
 	"\vRankRequest\x12\"\n" +
 	"\forganization\x18\x01 \x01(\tR\forganization\"(\n" +
 	"\tRankReply\x12\x1b\n" +
 	"\x05users\x18\x01 \x03(\v2\x05.UserR\x05users\"L\n" +
 	"\x04User\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12.\n" +
-	"\x12totalContributions\x18\x03 \x01(\rR\x12totalContributions2/\n" +
+	"\x12totalContributions\x18\x02 \x01(\rR\x12totalContributions2/\n" +
 	"\x04Rank\x12'\n" +
 	"\vGetRankings\x12\f.RankRequest\x1a\n" +
-	".RankReplyB\x0eZ\f./protobuf;rankb\x06proto3"
+	".RankReplyB<Z:github.com/n0067h/gbsw-gitrank/internal/protobuf/rank;rankb\x06proto3"
 
 var (
-	file_proto_rank_proto_rawDescOnce sync.Once
-	file_proto_rank_proto_rawDescData []byte
+	file_internal_protobuf_rank_rank_proto_rawDescOnce sync.Once
+	file_internal_protobuf_rank_rank_proto_rawDescData []byte
 )
 
-func file_proto_rank_proto_rawDescGZIP() []byte {
-	file_proto_rank_proto_rawDescOnce.Do(func() {
-		file_proto_rank_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_rank_proto_rawDesc), len(file_proto_rank_proto_rawDesc)))
+func file_internal_protobuf_rank_rank_proto_rawDescGZIP() []byte {
+	file_internal_protobuf_rank_rank_proto_rawDescOnce.Do(func() {
+		file_internal_protobuf_rank_rank_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_internal_protobuf_rank_rank_proto_rawDesc), len(file_internal_protobuf_rank_rank_proto_rawDesc)))
 	})
-	return file_proto_rank_proto_rawDescData
+	return file_internal_protobuf_rank_rank_proto_rawDescData
 }
 
-var file_proto_rank_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_proto_rank_proto_goTypes = []any{
+var file_internal_protobuf_rank_rank_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_internal_protobuf_rank_rank_proto_goTypes = []any{
 	(*RankRequest)(nil), // 0: RankRequest
 	(*RankReply)(nil),   // 1: RankReply
 	(*User)(nil),        // 2: User
 }
-var file_proto_rank_proto_depIdxs = []int32{
+var file_internal_protobuf_rank_rank_proto_depIdxs = []int32{
 	2, // 0: RankReply.users:type_name -> User
 	0, // 1: Rank.GetRankings:input_type -> RankRequest
 	1, // 2: Rank.GetRankings:output_type -> RankReply
@@ -206,26 +206,26 @@ var file_proto_rank_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_proto_rank_proto_init() }
-func file_proto_rank_proto_init() {
-	if File_proto_rank_proto != nil {
+func init() { file_internal_protobuf_rank_rank_proto_init() }
+func file_internal_protobuf_rank_rank_proto_init() {
+	if File_internal_protobuf_rank_rank_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_rank_proto_rawDesc), len(file_proto_rank_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_internal_protobuf_rank_rank_proto_rawDesc), len(file_internal_protobuf_rank_rank_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_rank_proto_goTypes,
-		DependencyIndexes: file_proto_rank_proto_depIdxs,
-		MessageInfos:      file_proto_rank_proto_msgTypes,
+		GoTypes:           file_internal_protobuf_rank_rank_proto_goTypes,
+		DependencyIndexes: file_internal_protobuf_rank_rank_proto_depIdxs,
+		MessageInfos:      file_internal_protobuf_rank_rank_proto_msgTypes,
 	}.Build()
-	File_proto_rank_proto = out.File
-	file_proto_rank_proto_goTypes = nil
-	file_proto_rank_proto_depIdxs = nil
+	File_internal_protobuf_rank_rank_proto = out.File
+	file_internal_protobuf_rank_rank_proto_goTypes = nil
+	file_internal_protobuf_rank_rank_proto_depIdxs = nil
 }
