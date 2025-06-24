@@ -1,7 +1,6 @@
 package ghclient
 
 import (
-	"github.com/gbswhs/gbsw-gitrank/worker/model"
 	"github.com/shurcooL/githubv4"
 	"sort"
 )
@@ -18,7 +17,7 @@ func GetRanks() {
 	client := GetClient()
 	cursor := (*githubv4.String)(nil)
 
-	var orgQuery model.OrganizationQuery
+	var orgQuery OrganizationQuery
 	err := QueryOrganization(client, &orgQuery, cursor)
 	if err != nil {
 		panic(err)
@@ -40,7 +39,7 @@ func GetRanks() {
 	}
 
 	for _, node := range nodes {
-		contribQuery := new(model.ContributionQuery)
+		contribQuery := new(ContributionQuery)
 		err := QueryContributions(client, contribQuery, node.Login)
 		if err != nil {
 			panic(err)
