@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/n0067h/gitrank/internal/worker/config"
+	"github.com/n0067h/gitrank/internal/config"
 	"log"
 )
 

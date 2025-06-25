@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/n0067h/gitrank/internal/api/config"
 	"github.com/n0067h/gitrank/internal/api/route"
+	"github.com/n0067h/gitrank/internal/config"
 )
 
 func main() {
