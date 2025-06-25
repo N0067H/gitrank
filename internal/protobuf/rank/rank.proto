@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/n0067h/gbsw-gitrank/internal/protobuf/rank;rank";
+option go_package = "github.com/n0067h/gitrank/internal/protobuf/rank;rank";
 
 message RankRequest {
   string organization = 1;

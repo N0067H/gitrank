@@ -1,4 +1,4 @@
-module github.com/gbswhs/gbsw-gitrank
+module github.com/n0067h/gitrank
 
 go 1.24.3
 

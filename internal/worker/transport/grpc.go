@@ -3,9 +3,9 @@ package transport
 import (
 	"context"
 	"fmt"
-	"github.com/gbswhs/gbsw-gitrank/internal/protobuf/rank"
-	"github.com/gbswhs/gbsw-gitrank/internal/worker/config"
-	"github.com/gbswhs/gbsw-gitrank/internal/worker/ghclient"
+	"github.com/n0067h/gitrank/internal/protobuf/rank"
+	"github.com/n0067h/gitrank/internal/worker/config"
+	"github.com/n0067h/gitrank/internal/worker/ghclient"
 	"google.golang.org/grpc"
 	"log"
 	"net"

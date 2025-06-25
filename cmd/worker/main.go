@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/gbswhs/gbsw-gitrank/internal/worker/config"
-	"github.com/gbswhs/gbsw-gitrank/internal/worker/transport"
+	"github.com/n0067h/gitrank/internal/worker/config"
+	"github.com/n0067h/gitrank/internal/worker/transport"
 	"log"
 )
 

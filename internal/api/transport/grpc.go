@@ -2,10 +2,10 @@ package transport
 
 import (
 	"context"
-	"github.com/gbswhs/gbsw-gitrank/internal/api/config"
-	"github.com/gbswhs/gbsw-gitrank/internal/protobuf/rank"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"github.com/n0067h/gitrank/internal/api/config"
+	"github.com/n0067h/gitrank/internal/protobuf/rank"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"time"

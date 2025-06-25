@@ -1,9 +1,9 @@
 package route
 
 import (
-	"github.com/gbswhs/gbsw-gitrank/internal/api/transport"
-	"github.com/gbswhs/gbsw-gitrank/internal/protobuf/rank"
 	"github.com/gofiber/fiber/v2"
+	"github.com/n0067h/gitrank/internal/api/transport"
+	"github.com/n0067h/gitrank/internal/protobuf/rank"
 )
 
 func SetupRoute(app *fiber.App, c rank.RankClient) {

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/gbswhs/gbsw-gitrank/internal/api/config"
-	"github.com/gbswhs/gbsw-gitrank/internal/api/route"
-	"github.com/gbswhs/gbsw-gitrank/internal/api/transport"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"github.com/n0067h/gitrank/internal/api/config"
+	"github.com/n0067h/gitrank/internal/api/route"
+	"github.com/n0067h/gitrank/internal/api/transport"
 )
 
 func main() {
