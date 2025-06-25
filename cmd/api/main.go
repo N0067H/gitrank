@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	err := config.Init()
+	err := config.Load()
 	if err != nil {
 		log.Fatal("failed to load .env file")
 	}
@@ -16,5 +16,5 @@ func main() {
 	app := fiber.New()
 	route.SetupRoute(app)
 
-	log.Fatal(app.Listen(":" + config.GetConfig().APIPort))
+	log.Fatal(app.Listen(":" + config.AppConfig.APIPort))
 }

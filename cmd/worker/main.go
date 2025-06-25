@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	err := config.Init()
+	err := config.Load()
 	if err != nil {
 		log.Fatal("failed to load .env file")
 	}

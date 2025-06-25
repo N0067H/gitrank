@@ -16,12 +16,12 @@ type Config struct {
 	RedisDatabase    string
 }
 
-var config *Config
+var AppConfig *Config
 
-func Init() error {
+func Load() error {
 	err := godotenv.Load()
 
-	config = &Config{
+	AppConfig = &Config{
 		APIPort:          os.Getenv("API_PORT"),
 		WorkerPort:       os.Getenv("WORKER_PORT"),
 		GithubToken:      os.Getenv("GITHUB_TOKEN"),
@@ -33,8 +33,4 @@ func Init() error {
 	}
 
 	return err
-}
-
-func GetConfig() *Config {
-	return config
 }
