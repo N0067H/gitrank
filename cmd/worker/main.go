@@ -20,6 +20,7 @@ func main() {
 
 	myredis.Init()
 	log.Println("Init cache")
+
 	pubsub := myredis.Subscribe("update_request")
 	for {
 		msg, err := pubsub.ReceiveMessage(context.Background())
@@ -27,14 +28,13 @@ func main() {
 			panic(err)
 		}
 
-		fmt.Println("Received:", msg)
 		ghclient.GetRanks()
 		data, err := json.Marshal(ghclient.Users)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		log.Println(string(data))
+		log.Println("Cached: ", string(data)[:100])
 		if err := myredis.Rdb.Set(context.TODO(), "ranking", string(data), time.Minute*30).Err(); err != nil {
 			panic(err)
 		}
