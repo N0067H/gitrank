@@ -2,12 +2,14 @@ package route
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/n0067h/gitrank/internal/api/handler"
 )
 
-func SetupRoute(app *fiber.App) {
-	app.Get("/ping", func(c *fiber.Ctx) error {
-		return c.SendString("pong")
-	})
+func SetupRoutes(app *fiber.App) {
+	app.Get("/ping", pong)
+	app.Get("/rank", handler.GetRank)
+}
 
-	// app.Get("/rank", transport.GetRank(c))
+func pong(c *fiber.Ctx) error {
+	return c.SendString("pong")
 }

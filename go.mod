@@ -5,12 +5,15 @@ go 1.24.3
 require (
 	github.com/gofiber/fiber/v2 v2.52.8
 	github.com/joho/godotenv v1.5.1
+	github.com/redis/go-redis/v9 v9.11.0
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	golang.org/x/oauth2 v0.30.0
 )
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
