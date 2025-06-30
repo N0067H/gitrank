@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/n0067h/gitrank/internal/config"
 	myredis "github.com/n0067h/gitrank/internal/redis"
 	"github.com/n0067h/gitrank/internal/worker/ghclient"
@@ -23,7 +22,7 @@ func main() {
 
 	pubsub := myredis.Subscribe("update_request")
 	for {
-		msg, err := pubsub.ReceiveMessage(context.Background())
+		_, err := pubsub.ReceiveMessage(context.Background())
 		if err != nil {
 			panic(err)
 		}
