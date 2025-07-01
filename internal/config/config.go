@@ -8,6 +8,7 @@ import (
 type Config struct {
 	APIPort          string
 	WorkerPort       string
+	AllowOrigins     string
 	GithubToken      string
 	OrganizationName string
 	RedisHost        string
@@ -24,6 +25,7 @@ func Load() error {
 	AppConfig = &Config{
 		APIPort:          os.Getenv("API_PORT"),
 		WorkerPort:       os.Getenv("WORKER_PORT"),
+		AllowOrigins:     os.Getenv("ALLOW_ORIGINS"),
 		GithubToken:      os.Getenv("GITHUB_TOKEN"),
 		OrganizationName: os.Getenv("ORGANIZATION_NAME"),
 		RedisHost:        os.Getenv("REDIS_HOST"),
