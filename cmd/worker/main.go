@@ -27,8 +27,8 @@ func main() {
 			panic(err)
 		}
 
-		ghclient.GetRanks()
-		data, err := json.Marshal(ghclient.Users)
+		users := ghclient.GetRanks()
+		data, err := json.Marshal(users)
 		if err != nil {
 			log.Fatal(err)
 		}

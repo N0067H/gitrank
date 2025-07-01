@@ -5,19 +5,13 @@ import (
 	"sort"
 )
 
-// Temporary cache store
-var Users []User
-
 type User struct {
 	Login              githubv4.String
 	TotalContributions githubv4.Int
 }
 
-func GetRanks() {
-	// Cache check
-	if len(Users) > 0 {
-		return
-	}
+func GetRanks() []User {
+	var users []User
 
 	client := GetClient()
 	cursor := (*githubv4.String)(nil)
@@ -54,10 +48,12 @@ func GetRanks() {
 		contributionCalendar := contributionCollection.ContributionCalendar
 		totalContributions := contributionCalendar.TotalContributions
 
-		Users = append(Users, User{Login: node.Login, TotalContributions: totalContributions})
+		users = append(users, User{Login: node.Login, TotalContributions: totalContributions})
 	}
 
-	sort.Slice(Users, func(i, j int) bool {
-		return Users[i].TotalContributions > Users[j].TotalContributions
+	sort.Slice(users, func(i, j int) bool {
+		return users[i].TotalContributions > users[j].TotalContributions
 	})
+
+	return users
 }
