@@ -1,41 +1,36 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
+	"fmt"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/n0067h/gitrank/internal/config"
 	myredis "github.com/n0067h/gitrank/internal/redis"
-	"github.com/n0067h/gitrank/internal/worker/ghclient"
-	"log"
-	"time"
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatalf("Error: %v\n", err)
+	}
+}
+
+func run() error {
 	err := config.Load()
 	if err != nil {
-		log.Fatal("failed to load .env file")
+		return fmt.Errorf("failed to load .env file")
 	}
-	log.Println("Load .env")
+	log.Info("Configuration loaded")
 
 	myredis.Init()
-	log.Println("Init cache")
-
-	pubsub := myredis.Subscribe("update_request")
-	for {
-		_, err := pubsub.ReceiveMessage(context.Background())
-		if err != nil {
-			panic(err)
-		}
-
-		users := ghclient.GetRanks()
-		data, err := json.Marshal(users)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.Println("Cached: ", string(data)[:100])
-		if err := myredis.Rdb.Set(context.TODO(), "ranking", string(data), time.Minute*30).Err(); err != nil {
-			panic(err)
-		}
+	if myredis.Rdb == nil {
+		return fmt.Errorf("failed to initialize Redis client")
 	}
+	log.Info("Redis client initialized")
+
+	pubsub := myredis.Subscribe("ranking:update_request")
+	if pubsub == nil {
+		return fmt.Errorf("failed to subscribe to channel 'ranking:update_request'")
+	}
+	log.Info("Subscribed to channel 'ranking:update_request'")
+
+	return myredis.CacheRanking(pubsub)
 }

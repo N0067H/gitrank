@@ -6,11 +6,11 @@ import (
 )
 
 type User struct {
-	Login              githubv4.String
-	TotalContributions githubv4.Int
+	Login              githubv4.String `json:"login"`
+	TotalContributions githubv4.Int    `json:"totalContributions"`
 }
 
-func GetRanks() []User {
+func GetRanking() []User {
 	var users []User
 
 	client := GetClient()

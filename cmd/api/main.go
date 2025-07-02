@@ -11,12 +11,23 @@ import (
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatalf("Error: %v\n", err)
+	}
+}
+
+func run() error {
 	err := config.Load()
 	if err != nil {
-		log.Fatal("failed to load .env file")
+		return fmt.Errorf("failed to load .env file")
 	}
+	log.Info("Configuration loaded")
 
 	myredis.Init()
+	if myredis.Rdb == nil {
+		return fmt.Errorf("failed to initialize Redis client")
+	}
+	log.Info("Redis client initialized")
 
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
@@ -24,5 +35,9 @@ func main() {
 	}))
 	route.SetupRoutes(app)
 
-	log.Fatal(app.Listen(":" + config.AppConfig.APIPort))
+	if err := app.Listen(":" + config.AppConfig.APIPort); err != nil {
+		return fmt.Errorf("failed to start server: %w", err)
+	}
+
+	return nil
 }

@@ -7,7 +7,7 @@ import (
 
 func SetupRoutes(app *fiber.App) {
 	app.Get("/ping", pong)
-	app.Get("/rank", handler.GetRank)
+	app.Get("/rank", handler.GetRanking)
 }
 
 func pong(c *fiber.Ctx) error {
