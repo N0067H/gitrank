@@ -19,7 +19,6 @@ func main() {
 	myredis.Init()
 
 	app := fiber.New()
-	fmt.Println("config.AppConfig.AllowOrigins")
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: config.AppConfig.AllowOrigins,
 	}))
