@@ -6,8 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	myredis "github.com/n0067h/gitrank/internal/redis"
-	"github.com/n0067h/gitrank/internal/worker/ghclient"
 	"github.com/redis/go-redis/v9"
+	"time"
 )
 
 func GetRanking(c *fiber.Ctx) error {
@@ -23,11 +23,20 @@ func GetRanking(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	var result []ghclient.User
-	if err := json.Unmarshal([]byte(ranking), &result); err != nil {
-		log.Errorf("Failed to unmarshal ranking data: %v", err)
+	var cache myredis.Cache
+	if err := json.Unmarshal([]byte(ranking), &cache); err != nil {
+		log.Errorf("failed to unmarshal ranking data: %v", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.JSON(result)
+	if cache.ExpiresIn.Before(time.Now()) {
+		log.Info("cache expired, requesting update")
+
+		if err := myredis.Publish("ranking:update_request", "update"); err != nil {
+			log.Errorf("failed to publish update request: %v", err)
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
+	}
+
+	return c.JSON(cache)
 }

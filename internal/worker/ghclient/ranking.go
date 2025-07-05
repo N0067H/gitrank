@@ -5,11 +5,6 @@ import (
 	"sort"
 )
 
-type User struct {
-	Login              githubv4.String `json:"login"`
-	TotalContributions githubv4.Int    `json:"totalContributions"`
-}
-
 func GetRanking() []User {
 	var users []User
 

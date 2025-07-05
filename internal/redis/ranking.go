@@ -19,13 +19,13 @@ func GetRanking() (string, error) {
 	return val, nil
 }
 
-func SetRanking(users []ghclient.User) error {
-	data, err := json.Marshal(users)
+func SetRanking(cache *Cache) error {
+	data, err := json.Marshal(cache)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return Rdb.Set(context.TODO(), "ranking", string(data), time.Minute*30).Err()
+	return Rdb.Set(context.TODO(), "ranking", string(data), 0).Err()
 }
 
 func CacheRanking(pubsub *redis.PubSub) error {
@@ -37,7 +37,12 @@ func CacheRanking(pubsub *redis.PubSub) error {
 		log.Info("Received update request, fetching new ranking")
 
 		users := ghclient.GetRanking()
-		err = SetRanking(users)
+		cache := &Cache{
+			Users:     users,
+			ExpiresIn: time.Now().Add(3 * time.Minute),
+		}
+
+		err = SetRanking(cache)
 		if err != nil {
 			return fmt.Errorf("failed to set ranking: %w", err)
 		}
