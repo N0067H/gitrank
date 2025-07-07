@@ -15,7 +15,7 @@ func GetRanking(c *fiber.Ctx) error {
 	if err == redis.Nil {
 		proceed, err := myredis.GetRankingProceed()
 		if err != nil {
-			log.Errorf("redis.GetRankingProceed(): %v", err)
+			log.Errorf("Failed to get ranking proceed(): %v", err)
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 
@@ -27,21 +27,19 @@ func GetRanking(c *fiber.Ctx) error {
 
 		return c.SendStatus(fiber.StatusAccepted)
 	} else if err != nil {
-		log.Errorf("redis.GetRanking(): %v", err)
+		log.Errorf("Failed to get ranking(): %v", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	var cache myredis.Cache
 	if err := json.Unmarshal([]byte(ranking), &cache); err != nil {
-		log.Errorf("failed to unmarshal ranking data: %v", err)
+		log.Errorf("Failed to unmarshal ranking data: %v", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	if cache.ExpiresIn.Before(time.Now()) {
-		log.Info("cache expired, requesting update")
-
 		if err := myredis.Publish("ranking:update_request", "update"); err != nil {
-			log.Errorf("failed to publish update request: %v", err)
+			log.Errorf("Failed to publish update request: %v", err)
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 	}

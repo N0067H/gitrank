@@ -18,19 +18,16 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("failed to load .env file")
 	}
-	log.Info("Configuration loaded")
 
 	myredis.Init()
 	if myredis.Rdb == nil {
 		return fmt.Errorf("failed to initialize Redis client")
 	}
-	log.Info("Redis client initialized")
 
 	pubsub := myredis.Subscribe("ranking:update_request")
 	if pubsub == nil {
 		return fmt.Errorf("failed to subscribe to channel 'ranking:update_request'")
 	}
-	log.Info("Subscribed to channel 'ranking:update_request'")
 
 	return myredis.CacheRanking(pubsub)
 }

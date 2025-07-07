@@ -26,8 +26,6 @@ func CacheRanking(pubsub *redis.PubSub) error {
 			continue
 		}
 
-		log.Info("Received update request, fetching new ranking")
-
 		users := ghclient.GetRanking()
 		cache := &Cache{
 			Users:     users,
@@ -43,8 +41,6 @@ func CacheRanking(pubsub *redis.PubSub) error {
 		if err != nil {
 			return err
 		}
-
-		log.Info("New ranking cached")
 	}
 }
 

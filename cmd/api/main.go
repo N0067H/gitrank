@@ -21,13 +21,11 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("failed to load .env file")
 	}
-	log.Info("Configuration loaded")
-
+ 
 	myredis.Init()
 	if myredis.Rdb == nil {
 		return fmt.Errorf("failed to initialize Redis client")
 	}
-	log.Info("Redis client initialized")
 
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
