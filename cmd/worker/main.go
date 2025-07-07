@@ -29,5 +29,7 @@ func run() error {
 		return fmt.Errorf("failed to subscribe to channel 'ranking:update_request'")
 	}
 
+	log.Info("Connected to Redis server")
+
 	return myredis.CacheRanking(pubsub)
 }
