@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"fmt"
 	"github.com/redis/go-redis/v9"
 	"log"
 )
@@ -20,5 +21,10 @@ func Subscribe(channel string) *redis.PubSub {
 }
 
 func ReceiveMessage(pubsub *redis.PubSub) (*redis.Message, error) {
-	return pubsub.ReceiveMessage(context.TODO())
+	ps, err := pubsub.ReceiveMessage(context.TODO())
+	if err != nil {
+		return nil, fmt.Errorf("failed to receive message: %w", err)
+	}
+
+	return ps, nil
 }

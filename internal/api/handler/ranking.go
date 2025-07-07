@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	myredis "github.com/n0067h/gitrank/internal/redis"
@@ -12,9 +11,18 @@ import (
 
 func GetRanking(c *fiber.Ctx) error {
 	ranking, err := myredis.GetRanking()
-	if errors.Is(err, redis.Nil) {
-		if err := myredis.Publish("ranking:update_request", "update"); err != nil {
+
+	if err == redis.Nil {
+		proceed, err := myredis.GetRankingProceed()
+		if err != nil {
+			log.Errorf("redis.GetRankingProceed(): %v", err)
 			return c.SendStatus(fiber.StatusInternalServerError)
+		}
+
+		if !proceed {
+			if err := myredis.Publish("ranking:update_request", "update"); err != nil {
+				return c.SendStatus(fiber.StatusInternalServerError)
+			}
 		}
 
 		return c.SendStatus(fiber.StatusAccepted)
