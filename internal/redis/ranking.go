@@ -10,9 +10,9 @@ import (
 	"time"
 )
 
-func CacheRanking(pubsub *redis.PubSub) error {
+func CacheRanking(updateChannel *redis.PubSub) error {
 	for {
-		_, err := ReceiveMessage(pubsub)
+		_, err := ReceiveMessage(updateChannel)
 		if err != nil {
 			return err
 		}

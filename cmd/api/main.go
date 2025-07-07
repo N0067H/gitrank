@@ -8,6 +8,7 @@ import (
 	"github.com/n0067h/gitrank/internal/api/route"
 	"github.com/n0067h/gitrank/internal/config"
 	myredis "github.com/n0067h/gitrank/internal/redis"
+	"time"
 )
 
 func main() {
@@ -21,7 +22,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("failed to load .env file")
 	}
- 
+
 	myredis.Init()
 	if myredis.Rdb == nil {
 		return fmt.Errorf("failed to initialize Redis client")
@@ -32,6 +33,13 @@ func run() error {
 		AllowOrigins: config.AppConfig.AllowOrigins,
 	}))
 	route.SetupRoutes(app)
+
+	go func() {
+		for {
+			myredis.CheckHeartbeat()
+			time.Sleep(20 * time.Second)
+		}
+	}()
 
 	if err := app.Listen(":" + config.AppConfig.APIPort); err != nil {
 		return fmt.Errorf("failed to start server: %w", err)

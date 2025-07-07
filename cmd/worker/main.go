@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/n0067h/gitrank/internal/config"
 	myredis "github.com/n0067h/gitrank/internal/redis"
+	"time"
 )
 
 func main() {
@@ -24,12 +25,18 @@ func run() error {
 		return fmt.Errorf("failed to initialize Redis client")
 	}
 
-	pubsub := myredis.Subscribe("ranking:update_request")
-	if pubsub == nil {
+	updateChannel := myredis.Subscribe("ranking:update_request")
+	if updateChannel == nil {
 		return fmt.Errorf("failed to subscribe to channel 'ranking:update_request'")
 	}
-
 	log.Info("Connected to Redis server")
 
-	return myredis.CacheRanking(pubsub)
+	go func() {
+		for {
+			myredis.SetHeartbeat()
+			time.Sleep(10 * time.Second)
+		}
+	}()
+
+	return myredis.CacheRanking(updateChannel)
 }
