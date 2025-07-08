@@ -1,49 +1,51 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/n0067h/gitrank/internal/api/route"
+	"github.com/n0067h/gitrank/internal/api/handler"
 	"github.com/n0067h/gitrank/internal/config"
 	myredis "github.com/n0067h/gitrank/internal/redis"
+	"github.com/redis/go-redis/v9"
 	"time"
 )
 
 func main() {
-	if err := run(); err != nil {
-		log.Fatalf("Error: %v\n", err)
-	}
-}
+	config.Load()
 
-func run() error {
-	err := config.Load()
-	if err != nil {
-		return fmt.Errorf("failed to load .env file")
+	var rdb *redis.Client
+	for {
+		rdb = myredis.Init()
+		if rdb != nil {
+			break
+		}
+		log.Warn("Failed to connect to Redis; Retrying in 5 seconds...")
+		time.Sleep(5 * time.Second)
 	}
-
-	myredis.Init()
-	if myredis.Rdb == nil {
-		return fmt.Errorf("failed to initialize Redis client")
-	}
+	log.Info("Connected to Redis server")
 
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: config.AppConfig.AllowOrigins,
 	}))
-	route.SetupRoutes(app)
+	setupRoutes(app, rdb)
 
 	go func() {
 		for {
-			myredis.CheckHeartbeat()
+			myredis.CheckHeartbeat(rdb)
 			time.Sleep(20 * time.Second)
 		}
 	}()
 
 	if err := app.Listen(":" + config.AppConfig.APIPort); err != nil {
-		return fmt.Errorf("failed to start server: %w", err)
+		log.Fatalf("failed to start server: %v", err)
 	}
+}
 
-	return nil
+func setupRoutes(app *fiber.App, rdb *redis.Client) {
+	app.Get("/ping", func(c *fiber.Ctx) error {
+		return c.SendString("pong")
+	})
+	app.Get("/rank", handler.GetRanking(rdb))
 }

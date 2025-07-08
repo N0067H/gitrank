@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/joho/godotenv"
+	"log"
 	"os"
 )
 
@@ -19,8 +20,11 @@ type Config struct {
 
 var AppConfig *Config
 
-func Load() error {
+func Load() {
 	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("failed to load .env file")
+	}
 
 	AppConfig = &Config{
 		APIPort:          os.Getenv("API_PORT"),
@@ -33,6 +37,4 @@ func Load() error {
 		RedisPassword:    os.Getenv("REDIS_PASSWORD"),
 		RedisDatabase:    os.Getenv("REDIS_DATABASE"),
 	}
-
-	return err
 }

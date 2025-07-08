@@ -10,10 +10,10 @@ import (
 
 var workerStatus bool = false
 
-func CheckHeartbeat() {
-	heartbeat, err := GetHeartbeat()
+func CheckHeartbeat(rdb *redis.Client) {
+	heartbeat, err := GetHeartbeat(rdb)
 	if err != nil {
-		log.Error("Error checking heartbeat:", err)
+		log.Error(err)
 		if workerStatus {
 			log.Warn("Worker status unknown; Retrying in 20 seconds.")
 			workerStatus = false
@@ -27,8 +27,8 @@ func CheckHeartbeat() {
 	}
 }
 
-func GetHeartbeat() (bool, error) {
-	_, err := Rdb.Get(context.TODO(), "heartbeat").Result()
+func GetHeartbeat(rdb *redis.Client) (bool, error) {
+	_, err := rdb.Get(context.TODO(), "heartbeat").Result()
 	if err == redis.Nil {
 		return false, nil
 	} else if err != nil {
@@ -38,8 +38,8 @@ func GetHeartbeat() (bool, error) {
 	return true, nil
 }
 
-func SetHeartbeat() {
-	err := Rdb.Set(context.TODO(), "heartbeat", "", 10*time.Second).Err()
+func SetHeartbeat(rdb *redis.Client) {
+	err := rdb.Set(context.TODO(), "heartbeat", "", 10*time.Second).Err()
 	if err != nil {
 		log.Errorf("Failed to set heartbeat: %v", err)
 	}
