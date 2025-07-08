@@ -4,14 +4,19 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/n0067h/gitrank/internal/config"
 	myredis "github.com/n0067h/gitrank/internal/redis"
+	"github.com/redis/go-redis/v9"
 	"time"
 )
 
 func main() {
 	config.Load()
 
-	rdb := myredis.Init()
-	for myredis.Init(); rdb == nil; myredis.Init() {
+	var rdb *redis.Client
+	for {
+		rdb = myredis.Init()
+		if rdb != nil {
+			break
+		}
 		log.Warn("Failed to connect to Redis; Retrying in 5 seconds...")
 		time.Sleep(5 * time.Second)
 	}
