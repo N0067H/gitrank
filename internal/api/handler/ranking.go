@@ -10,7 +10,7 @@ import (
 
 func GetRanking(rdb *redis.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		cache, err := myredis.FetchRankingCache(rdb)
+		cache, err := myredis.GetRanking(rdb)
 		if err != nil {
 			if err == redis.Nil {
 				handled := myredis.TryPublishRankingUpdate(rdb)

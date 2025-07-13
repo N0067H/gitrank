@@ -6,6 +6,6 @@ import (
 )
 
 type Cache struct {
-	Users     []ghclient.User `json:"users"`
+	Ranking   []ghclient.User `json:"ranking"`
 	ExpiresIn time.Time       `json:"expires_in"`
 }

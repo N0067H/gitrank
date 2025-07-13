@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/n0067h/gitrank/internal/worker/ghclient"
@@ -23,9 +24,21 @@ func CacheRanking(rdb *redis.Client, updateChannel *redis.PubSub) {
 			continue
 		}
 
-		users := ghclient.GetRanking()
+		users, err := getUsers(rdb)
+		if errors.Is(err, redis.Nil) {
+			users = ghclient.GetUsers()
+			if err = saveUsers(rdb, users); err != nil {
+				log.Errorf("failed to cache users: %v", err)
+				continue
+			}
+		} else if err != nil {
+			log.Errorf("failed to get users: %v", err)
+			continue
+		}
+
+		ranking := ghclient.GetRanking(users)
 		cache := &Cache{
-			Users:     users,
+			Ranking:   ranking,
 			ExpiresIn: time.Now().Add(3 * time.Minute),
 		}
 
@@ -58,7 +71,7 @@ func saveRanking(rdb *redis.Client, cache *Cache) error {
 
 func isRankingLocked(rdb *redis.Client) (bool, error) {
 	_, err := rdb.Get(context.TODO(), "ranking:proceed").Result()
-	if err == redis.Nil {
+	if errors.Is(err, redis.Nil) {
 		return false, nil
 	} else if err != nil {
 		return false, fmt.Errorf("failed to get ranking proceed: %w", err)
@@ -76,9 +89,9 @@ func lockRanking(rdb *redis.Client) error {
 	return nil
 }
 
-func FetchRankingCache(rdb *redis.Client) (*Cache, error) {
+func GetRanking(rdb *redis.Client) (*Cache, error) {
 	val, err := rdb.Get(context.Background(), "ranking").Result()
-	if err == redis.Nil {
+	if errors.Is(err, redis.Nil) {
 		return nil, redis.Nil
 	}
 	if err != nil {

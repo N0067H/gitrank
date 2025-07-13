@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func GetRanking() []User {
+func GetUsers() []User {
 	var users []User
 
 	client := GetClient()
@@ -46,9 +46,12 @@ func GetRanking() []User {
 		users = append(users, User{Login: node.Login, TotalContributions: totalContributions})
 	}
 
+	return users
+}
+
+func GetRanking(users []User) []User {
 	sort.Slice(users, func(i, j int) bool {
 		return users[i].TotalContributions > users[j].TotalContributions
 	})
-
 	return users
 }
