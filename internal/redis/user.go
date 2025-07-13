@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/n0067h/gitrank/internal/config"
 	"github.com/n0067h/gitrank/internal/worker/ghclient"
 	"github.com/redis/go-redis/v9"
+	"log"
 	"time"
 )
 
@@ -15,10 +17,11 @@ func saveUsers(rdb *redis.Client, users []ghclient.User) error {
 		return fmt.Errorf("failed to marshal users: %w", err)
 	}
 
-	err = rdb.Set(context.TODO(), "users", string(val), 24*7*time.Hour).Err()
+	ttl, err := time.ParseDuration(config.AppConfig.UserCacheTTL)
 	if err != nil {
-		return fmt.Errorf("failed to set users: %w", err)
+		log.Fatalf("Failed to parse user cache TTL: %s", err)
 	}
+	rdb.Set(context.TODO(), "users", val, ttl)
 
 	return nil
 }

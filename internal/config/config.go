@@ -16,6 +16,8 @@ type Config struct {
 	RedisPort        string
 	RedisPassword    string
 	RedisDatabase    string
+	UserCacheTTL     string
+	RankingCacheTTL  string
 }
 
 var AppConfig *Config
@@ -36,5 +38,7 @@ func Load() {
 		RedisPort:        os.Getenv("REDIS_PORT"),
 		RedisPassword:    os.Getenv("REDIS_PASSWORD"),
 		RedisDatabase:    os.Getenv("REDIS_DATABASE"),
+		UserCacheTTL:     os.Getenv("USER_CACHE_TTL"),
+		RankingCacheTTL:  os.Getenv("RANKING_CACHE_TTL"),
 	}
 }
