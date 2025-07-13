@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>GitHub Organization Rankings</title>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🏆 GitHub Rankings</h1>
+        <p>Top contributors in this org</p>
+        <div class="stats" id="stats" style="display: none;">
+            <span>👥</span>
+            <span id="contributor-count">0</span>
+            <span>contributors</span>
+        </div>
+    </div>
+
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p id="loading-text">Loading rankings...</p>
+    </div>
+
+    <div id="error" class="error" style="display: none;">
+        <h2>⚠️ Error happened</h2>
+        <p id="error-message"></p>
+        <button class="refresh-btn" onclick="fetchRankings()">Try again</button>
+    </div>
+
+    <div id="rankings" class="rankings" style="display: none;"></div>
+
+    <button class="refresh-btn" id="refresh-btn" onclick="fetchRankings()" style="display: none;">
+        🔄 Refresh
+    </button>
+</div>
+
+<script>
+    let rankingsData = [];
+
+    async function fetchRankings() {
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loading-text');
+        const error = document.getElementById('error');
+        const rankings = document.getElementById('rankings');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const stats = document.getElementById('stats');
+
+        loading.style.display = 'block';
+        loadingText.textContent = 'Loading rankings...';
+        error.style.display = 'none';
+        rankings.style.display = 'none';
+        refreshBtn.style.display = 'none';
+        stats.style.display = 'none';
+
+        try {
+            const response = await fetch('http://localhost:2626/rank');
+
+            if (response.status === 202) {
+                loadingText.textContent = 'Still fetching data. Please wait...';
+                setTimeout(fetchRankings, 5000);
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const json = await response.json();
+
+            // 여기서 ranking만 뽑아냄
+            const data = json.ranking;
+
+            if (!Array.isArray(data)) {
+                throw new Error('Invalid data format: expected array at data.ranking');
+            }
+
+            rankingsData = data;
+
+            displayRankings(data);
+
+            document.getElementById('contributor-count').textContent = data.length;
+            stats.style.display = 'inline-flex';
+            refreshBtn.style.display = 'block';
+            loading.style.display = 'none';
+
+        } catch (err) {
+            console.error('Error fetching rankings:', err);
+            document.getElementById('error-message').textContent =
+                `Can't load rankings: ${err.message}`;
+            error.style.display = 'block';
+            loading.style.display = 'none';
+        }
+    }
+
+    function displayRankings(data) {
+        const rankings = document.getElementById('rankings');
+        const maxContributions = data.length > 0 ? data[0].totalContributions : 1;
+
+        rankings.innerHTML = '';
+        rankings.style.display = 'grid';
+
+        data.forEach((user, index) => {
+            const rank = index + 1;
+            const percentage = (user.totalContributions / maxContributions) * 100;
+
+            const card = document.createElement('div');
+            card.className = `rank-card fade-in ${rank <= 3 ? 'top-3' : ''}`;
+            card.style.animationDelay = `${index * 0.1}s`;
+
+            const rankIcon = getRankIcon(rank);
+            const rankClass = getRankClass(rank);
+
+            card.innerHTML = `
+            <div class="rank-content">
+                <div class="rank-left">
+                    <div class="rank-icon ${rankClass}">
+                        ${rankIcon}
+                    </div>
+                    <div class="user-info">
+                        <h3>${user.login}</h3>
+                        <p>GitHub Contributor</p>
+                    </div>
+                </div>
+                <div class="contributions">
+                    <div class="number">${user.totalContributions.toLocaleString()}</div>
+                    <div class="label">contributions</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${percentage}%"></div>
+            </div>
+        `;
+
+            rankings.appendChild(card);
+        });
+    }
+
+
+    function getRankIcon(rank) {
+        switch (rank) {
+            case 1: return '🏆';
+            case 2: return '🥈';
+            case 3: return '🥉';
+            default: return `#${rank}`;
+        }
+    }
+
+    function getRankClass(rank) {
+        switch (rank) {
+            case 1: return 'rank-1';
+            case 2: return 'rank-2';
+            case 3: return 'rank-3';
+            default: return 'rank-other';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchRankings);
+</script>
+</body>
+</html>
