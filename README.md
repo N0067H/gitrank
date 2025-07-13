@@ -4,7 +4,6 @@ GitHub Organization Ranking API
 > a toy project for practicing GitHub API usage and caching.
 
 <img src="./architecture.png" alt="Architecture Diagram" width="600">
-<img src="./test.gif" alt="Test Video" width="600">
 
 ---
 
@@ -38,4 +37,6 @@ GitHub Organization Ranking API
      ```
    - The API will return ranking data in JSON format.
 
-7. **You can use sample ui `./sampleui/index.html`**
+7. **You can use [sample ui](./sampleui/index.html)**
+<img src="./test.gif" alt="Test Video" width="600">
+
